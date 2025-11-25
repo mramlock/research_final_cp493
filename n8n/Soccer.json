@@ -1,0 +1,85 @@
+{
+  "name": "Soccer",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "95f49fa0-e6ea-46bc-a3d3-474c828caed5",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "command": "=python3 /data/scripts/test13.py --query \"={{ $json.query }}\"\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a61dd637-5f20-46c3-8a94-9bbc07da6a9f",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "jsCode": "// The Execute Command node output is on the previous item\nconst stdout = $json.stdout || '';\nlet data;\ntry {\n  data = JSON.parse(stdout);\n} catch (e) {\n  data = { error: \"Script did not return valid JSON\", raw: stdout };\n}\n// If script returns an array, emit items; if object, emit single\nif (Array.isArray(data)) {\n  return data.map(x => ({ json: x }));\n} else {\n  return [{ json: data }];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        0
+      ],
+      "id": "8993e54e-aa45-451c-b497-20ea1f24779d",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a8b6c3d2-bf4e-45fd-9276-4d67300b7502",
+  "meta": {
+    "instanceId": "72c2425280cb2a80ec4b334911080b6d42ba9e16f825143d6460919af52d0e4c"
+  },
+  "id": "EVxWxfmF2LElBLT5",
+  "tags": []
+}
