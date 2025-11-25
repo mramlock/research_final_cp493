@@ -1,5 +1,5 @@
 # Football Managment AI
- cp493 assignment FRONT END
+ cp493 assignment back-end
 
 Football Management AI overview
 https://youtu.be/jjShBe-Xzdk
